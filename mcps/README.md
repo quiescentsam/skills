@@ -56,6 +56,17 @@ For a short command, add an alias or symlink the script onto your **`PATH`**.
 
 Prefer **`./mcps/scripts/project-pick-mcp.sh`** or **`bash mcps/scripts/project-pick-mcp.sh`**. The script avoids bash-only process substitution so **`sh mcps/scripts/project-pick-mcp.sh`** also works on macOS (where `/bin/sh` is bash in POSIX mode).
 
+### Project-level Cursor skills (`.cursor/skills`)
+
+From another repo’s root (or **`-C /path/to/project`**), install this clone’s **`skills/`** tree into that project’s **`.cursor/skills`**:
+
+```bash
+~/Desktop/CODE/skills/mcps/scripts/project-setup-cursor-skills.sh
+~/Desktop/CODE/skills/mcps/scripts/project-setup-cursor-skills.sh -C ~/code/my-app
+```
+
+The script asks **copy** vs **symlink** (unless you pass **`-m copy`** or **`-m symlink`**). **Symlink** keeps a live link to this repo’s `skills/` (good for one machine with a stable clone path). **Copy** is better for portability or CI. If **`.cursor/skills` already exists**, you are prompted to replace it unless **`-y`** is set. Set **`SKILLS_ROOT`** if the script lives outside this repo.
+
 ### Option B — hand-edit each project
 
 Copy the inner object from `servers/<id>.json` into your app’s `mcpServers`, and **omit** the `"_serverKey"` field (that field is only for the emitter). Keep `command` / `args` / `env` aligned with this repo so every project behaves the same.
@@ -72,3 +83,45 @@ Add a row and a new `servers/<id>.json` when you adopt another MCP.
 ## Requirements
 
 Servers invoked via `npx` need **Node.js** (and a compatible **Chrome** install for Chrome DevTools MCP). See each upstream README for version bounds and flags (`--slim`, `--headless`, privacy flags, etc.).
+
+
+
+### Running Maverick MCP
+
+Maverick runs as a **separate process** (clone lives at [`maverick-mcp/`](maverick-mcp/)). See also [`containers/README.md`](../containers/README.md) for the shared Redis stack.
+
+#### First-time setup
+
+From the **skills repo root**:
+
+```bash
+cd mcps/maverick-mcp
+cp .env.example .env          # set TIINGO_API_KEY; REDIS_PORT=6380 matches Docker Redis below
+UV_NATIVE_TLS=1 uv sync         # use native TLS if PyPI cert verification fails on your network
+```
+
+#### Start (each time)
+
+```bash
+# 1. Redis (once per reboot — skip if container is already up)
+docker compose -f containers/redis/docker-compose.yml up -d
+
+# 2. Maverick
+cd mcps/maverick-mcp
+make dev                        # http://127.0.0.1:8003/mcp/
+```
+
+Run those `docker compose` paths from the **skills repo root**. If you are already in `mcps/maverick-mcp`, use `../../containers/redis/docker-compose.yml` instead.
+
+#### Verify
+
+```bash
+curl http://127.0.0.1:8003/mcp    # expect 406 — server is listening
+curl http://127.0.0.1:8003/health # health check
+```
+
+#### Notes
+
+- **`make dev`** checks Redis by connectivity on `REDIS_HOST`/`REDIS_PORT` (Docker, Homebrew, or native). It can also start the Docker stack in `containers/redis/` if nothing is listening.
+- **No Redis?** Set `REDIS_HOST=none` in `.env` to skip caching and skip the Docker step.
+- **PyPI TLS errors** during `uv sync` or `make dev`? Run `UV_NATIVE_TLS=1 uv sync` once; `make dev` sets `UV_NATIVE_TLS=1` automatically.
