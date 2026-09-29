@@ -1,0 +1,6 @@
+[submodule "tools/a2a-inspector"]
+	path = tools/a2a-inspector
+	url = https://github.com/a2aproject/a2a-inspector.git
+[submodule "tools/mcp-inspector"]
+	path = tools/mcp-inspector
+	url = https://github.com/modelcontextprotocol/inspector.git

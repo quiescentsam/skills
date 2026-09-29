@@ -1,0 +1,12 @@
+# Open-source agentregistry on local Rancher Desktop.
+# Defaults match the upstream chart: bundled Postgres, ClusterIP, one replica.
+# https://aregistry.ai/docs/reference/helm/
+
+database:
+  postgres:
+    type: bundled
+
+replicaCount: 1
+
+service:
+  type: ClusterIP

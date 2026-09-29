@@ -8,7 +8,10 @@ This repository is the single place where MCP server references, tool descriptor
 |------|---------|
 | [`mcps/`](mcps/) | MCP servers: canonical Cursor configs in [`mcps/servers/`](mcps/servers/), emitter script, and docs for **project-level** `.cursor/mcp.json`. |
 | [`skills/`](skills/) | Cursor skills (markdown with optional YAML front matter). Add or edit files here, then attach or register them in Cursor as your workflow requires. |
-| [`local_models/`](local_models/) | Notes for running local LLMs (Ollama on Apple Silicon) and pointing Cursor or scripts at the local API. |
+| [`local_models/`](local_models/) | Local model runtimes: **Ollama** (chat LLMs on `:11434`) and **Ollaya** (Jev-style decision models on `:11435`). |
+| [`tools/`](tools/) | Standalone local tools ([A2A Inspector](tools/a2a-inspector/), [MCP Inspector](tools/mcp-inspector/)); see [`tools/README.md`](tools/README.md). |
+| [`containers/`](containers/) | Docker Compose stacks for backing services (Redis, etc.). |
+| [`registry/`](registry/) | Local Kubernetes installs for artifact registries. Open-source agentregistry lives in [`registry/solo_agent_registry/`](registry/solo_agent_registry/). Jarvis Registry lives in [`registry/jarvis/`](registry/jarvis/). |
 
 ## Using this repo
 
