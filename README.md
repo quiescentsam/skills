@@ -12,6 +12,7 @@ This repository is the single place where MCP server references, tool descriptor
 | [`tools/`](tools/) | Standalone local tools ([A2A Inspector](tools/a2a-inspector/), [MCP Inspector](tools/mcp-inspector/)); see [`tools/README.md`](tools/README.md). |
 | [`containers/`](containers/) | Docker Compose stacks for backing services (Redis, etc.). |
 | [`registry/`](registry/) | Local Kubernetes installs for artifact registries. Open-source agentregistry lives in [`registry/solo_agent_registry/`](registry/solo_agent_registry/). Jarvis Registry lives in [`registry/jarvis/`](registry/jarvis/). |
+| [`security/keycloak/`](security/keycloak/) | Local Keycloak in namespace `security-keycloak`, forwarded to port 18080. |
 
 ## Using this repo
 

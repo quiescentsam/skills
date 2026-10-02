@@ -205,6 +205,20 @@ install_registry() {
   kubectl -n "$NAMESPACE" rollout status sts/jarvis-registry-weaviate --timeout=10m
   kubectl -n "$NAMESPACE" rollout status sts/mongodb --timeout=15m
   kubectl -n "$NAMESPACE" get pods
+  seed_access_roles
+}
+
+seed_access_roles() {
+  echo "==> Seeding ACL access roles"
+  local inserted
+  inserted="$(kubectl -n "$NAMESPACE" exec -i deploy/jarvis-registry-backend -- python - <"${ROOT}/seed_access_roles.py")"
+  echo "$inserted"
+  if [[ "$inserted" == INSERTED=0 ]]; then
+    return 0
+  fi
+  echo "==> Restarting backend so it reloads the ACL role catalog"
+  kubectl -n "$NAMESPACE" rollout restart deploy/jarvis-registry-backend
+  kubectl -n "$NAMESPACE" rollout status deploy/jarvis-registry-backend --timeout=15m
 }
 
 scale_operator() {
@@ -365,6 +379,7 @@ cmd_start() {
     echo "==> Starting ${RELEASE} in namespace ${NAMESPACE}"
     scale_workloads 1
     kubectl -n "$NAMESPACE" get pods
+    seed_access_roles
   fi
 
   start_port_forward

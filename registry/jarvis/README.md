@@ -132,6 +132,8 @@ Override the pin with `JARVIS_CHART_VERSION` if you need a different chart versi
 
 With no argument, the script installs.
 
+Azure embedding settings are not in this file. Copy [`.env.example`](.env.example) to `.env`, fill in the key and endpoint, then run `bash registry/jarvis/set-embedding.sh`. That patches secret `registry-env`, enables Weaviate's `text2vec-openai` module, and restarts Weaviate and the backend. Refresh the agent afterward so the registry creates the search collection. `.env` is gitignored.
+
 Read the generated admin password after install:
 
 ```bash
@@ -146,7 +148,27 @@ kubectl -n jarvis get secret registry-env -o jsonpath='{.data.ADMIN_PASSWORD}' |
 bash registry/jarvis/setup.sh start
 ```
 
-Open [http://localhost:19080](http://localhost:19080).
+When the forwards are up, the script prints these local URLs:
+
+| URL | What it serves |
+| --- | --- |
+| [http://localhost:19080](http://localhost:19080) | Registry web UI. Log in, register agents, and generate tokens. |
+| [http://localhost:17860](http://localhost:17860) | Backend API. Client agents use the MCP gateway at `/proxy/mcpgw/mcp`. |
+| [http://localhost:18888](http://localhost:18888) | Auth server. The UI login redirects through it, and it issues session cookies and tokens. |
+
+Open the UI at [http://localhost:19080](http://localhost:19080).
+
+## Authorization
+
+How login, API scopes, and per-resource access control work is in [Authorization](auth.md).
+
+## Call from a client agent
+
+Python examples for discovering and executing agents with a managed-agent token are in [Call the registry from a client agent](client-agent.md). Steps for calling agent `6abc3096c0485fa58919ddf3` are in [Call agent 6abc3096c0485fa58919ddf3](all-registry.md).
+
+## Register an agent
+
+Steps for cataloging a running A2A agent are in [Register an A2A agent](register-agent.md).
 
 `stop` ends the port-forwards and scales the registry, Redis, Weaviate, and MongoDB to zero. The operator is scaled to zero as well so it does not restore the MongoDB member. The Helm release and volumes stay in the namespace.
 
