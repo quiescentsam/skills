@@ -10,7 +10,7 @@ Docker Compose stacks for backing services used by projects in this repo. Each s
 |---------|-----------|-----------|---------|
 | Redis | [`redis/`](redis/) | `6380` | Maverick MCP cache (`mcps/maverick-mcp/.env`) |
 
-Port `6380` is used instead of the default `6379` so this Redis does not clash with other local stacks (for example Langfuse) that may already bind `6379`.
+Port `6380` is used instead of the default `6379` so this Redis does not clash with the local Langfuse stack ([`observability/langfuse`](../observability/langfuse/)), which publishes its own Redis on `127.0.0.1:6381`.
 
 ## Redis
 

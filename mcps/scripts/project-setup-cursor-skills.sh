@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Install this repo's skills/ into another project's .cursor/skills by copy or symlink.
+# Installs the entire skills/ tree into another project's .cursor/skills.
+# Prefer skills/setup.sh, which lets you pick individual skills.
 # Run from any project root, or pass -C <dir>.
 #
 # Usage:
@@ -19,7 +20,7 @@ DEFAULT_SKILLS_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 SKILLS_ROOT="${SKILLS_ROOT:-$DEFAULT_SKILLS_ROOT}"
 
 usage() {
-  sed -n '1,12p' "$SCRIPT_PATH" | tail -n +2
+  sed -n '1,13p' "$SCRIPT_PATH" | tail -n +2
   echo "Options:"
   echo "  -C DIR       project root (default: git toplevel or cwd)"
   echo "  -m MODE      copy | symlink — skip interactive method prompt"
