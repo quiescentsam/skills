@@ -1,15 +1,32 @@
 # Local models
 
-Two local runtimes that can run **side by side** on macOS (Apple Silicon):
+Two local runtimes that can run **side by side** on **macOS (Apple Silicon)** or **Ubuntu / Debian (Linux)**:
 
 | | [Ollama](https://ollama.com) | [Ollaya](https://ollaya.dev/) |
 |--|------------------------------|------------------------------|
 | Purpose | Chat / generative LLMs | System One / **Jev-style** decision models |
 | Default port | `127.0.0.1:11434` | `127.0.0.1:11435` |
 | Output | Text (tokens) | Typed answers + calibrated probabilities |
-| Quick setup | `bash local_models/setup-ollama.sh` | `bash local_models/setup-ollaya.sh` |
+| Quick setup (macOS) | `bash local_models/setup-ollama.sh` | `bash local_models/setup-ollaya.sh` |
+| Quick setup (Ubuntu) | `bash local_models/setup-ollama-ubuntu.sh` | `bash local_models/setup-ollaya.sh` |
 
 Use **Ollama** for Cursor custom models, OpenAI-compatible SDKs, and local chat. Use **Ollaya** when you want a local stand-in for TypeSafe **Jev** (`/v1/systemone`).
+
+### One-shot setup
+
+**macOS:**
+
+```bash
+bash local_models/setup.sh
+```
+
+**Ubuntu / Debian:**
+
+```bash
+bash local_models/setup-ubuntu.sh
+```
+
+Optional first argument to either combined script sets the Ollaya model tag (default `laya`).
 
 ---
 
@@ -19,13 +36,25 @@ Run generative LLMs locally with Metal on Apple Silicon. HTTP API: **`http://127
 
 ## Quick start
 
+**macOS:**
+
 ```bash
 bash local_models/setup-ollama.sh
 ollama pull llama3.2:3b
 ollama run llama3.2:3b
 ```
 
+**Ubuntu / Debian:**
+
+```bash
+bash local_models/setup-ollama-ubuntu.sh
+ollama pull llama3.2:3b
+ollama run llama3.2:3b
+```
+
 ## 1. Install Ollama
+
+### macOS
 
 **Recommended — official app (Homebrew cask):**
 
@@ -52,11 +81,39 @@ brew install --cask ollama-app
 
 > Needs **macOS 14+** for the current app cask and [Homebrew](https://brew.sh) for the brew paths.
 
+### Ubuntu / Debian (Linux)
+
+**Recommended — setup script (official install + systemd):**
+
+```bash
+bash local_models/setup-ollama-ubuntu.sh
+```
+
+**Manual — official install script:**
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+sudo systemctl enable ollama
+sudo systemctl start ollama
+```
+
+Installs the `ollama` CLI and a **systemd** unit (`ollama.service`). Models live under `~/.ollama/models` (same as macOS). NVIDIA GPU support is picked up automatically when drivers are installed.
+
+Download page (other Linux distros): <https://ollama.com/download/linux>
+
 ## 2. Start the server
 
-**App install (recommended):** `open -a Ollama` (menu bar app → `:11434`).
+**macOS — app install (recommended):** `open -a Ollama` (menu bar app → `:11434`).
 
-**Foreground (CLI):**
+**Linux — systemd (recommended after official install):**
+
+```bash
+sudo systemctl start ollama
+# stop: sudo systemctl stop ollama
+# logs: journalctl -u ollama -f
+```
+
+**Foreground (CLI, any OS):**
 
 ```bash
 ollama serve
@@ -143,8 +200,8 @@ Point SDKs with `OPENAI_BASE_URL=http://127.0.0.1:11434/v1` and any non-empty `O
 
 ## 6. Troubleshooting (Ollama)
 
-- **`could not connect to ollama server`** — start the app or `ollama serve` / `brew services start ollama`.
-- **Port `11434` in use** — another instance is up; `lsof -i :11434`, quit the menu-bar app, or stop brew services.
+- **`could not connect to ollama server`** — macOS: start the app or `ollama serve` / `brew services start ollama`. Linux: `sudo systemctl start ollama` or `ollama serve`.
+- **Port `11434` in use** — another instance is up; `lsof -i :11434` (or `ss -lntp | grep 11434` on Linux), quit the menu-bar app, or stop brew services / `systemctl stop ollama`.
 - **`llama-server` / GGUF failures after `brew install ollama`** — switch to `brew uninstall ollama && brew install --cask ollama-app`.
 - **OOM / very slow** — smaller tag, `OLLAMA_KV_CACHE_TYPE=q8_0`, or `OLLAMA_CONTEXT_LENGTH=2048 ollama serve`.
 - **Custom model dir** — `OLLAMA_MODELS=/path/to/dir` (default `~/.ollama/models`).

@@ -8,7 +8,7 @@ This repository is the single place where MCP server references, tool descriptor
 |------|---------|
 | [`mcps/`](mcps/) | MCP servers: canonical Cursor configs in [`mcps/servers/`](mcps/servers/), emitter script, and docs for **project-level** `.cursor/mcp.json`. |
 | [`skills/`](skills/) | Local library of Cursor Agent Skills. Pick the ones a new project needs and install them into that repo’s `.cursor/skills/`. |
-| [`local_models/`](local_models/) | Local model runtimes: **Ollama** (chat LLMs on `:11434`) and **Ollaya** (Jev-style decision models on `:11435`). |
+| [`local_models/`](local_models/) | Local model runtimes: **Ollama** (chat LLMs on `:11434`) and **Ollaya** (Jev-style decision models on `:11435`). macOS: [`setup.sh`](local_models/setup.sh); Ubuntu/Debian: [`setup-ubuntu.sh`](local_models/setup-ubuntu.sh). |
 | [`tools/`](tools/) | Standalone local tools ([A2A Inspector](tools/a2a-inspector/), [MCP Inspector](tools/mcp-inspector/)); see [`tools/README.md`](tools/README.md). |
 | [`containers/`](containers/) | Docker Compose stacks for backing services (Redis, etc.). |
 | [`observability/langfuse/`](observability/langfuse/) | Local Langfuse (traces, prompts, evals) at http://localhost:3100. |
