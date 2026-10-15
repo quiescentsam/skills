@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+#
+# One OpenAI-compatible URL for local Ollama and Azure AI Foundry.
+# Clients call http://127.0.0.1:4000/v1 and pick a model by name:
+#   ollama/<model>    -> Ollama on the host (prefix stripped)
+#   foundry/<model>   -> Azure AI Foundry (prefix stripped)
+#
+# Put the Foundry key in LLM/.env as FOUNDRY_API_KEY.
+# Replace the two Foundry placeholders below with your resource and project.
+
+config:
+  database:
+    url: sqlite:data/agentgateway.db
+
+gateways:
+  default:
+    port: 4000
+
+ui:
+  gateways: default
+
+llm:
+  models:
+    - name: "ollama/*"
+      provider: ollama
+      params:
+        baseUrl: http://127.0.0.1:11434/v1
+      transformation:
+        model: llmRequest.model.stripPrefix("ollama/")
+    - name: "foundry/*"
+      provider: azure
+      auth:
+        key:
+          value: "$FOUNDRY_API_KEY"
+          location:
+            header:
+              name: api-key
+      params:
+        azureResourceName: "your-resource-name"
+        azureResourceType: foundry
+        azureProjectName: "your-project-name"
+      transformation:
+        model: llmRequest.model.stripPrefix("foundry/")

@@ -2,3 +2,6 @@
 .DS_Store
 .cursor/mcp.json
 security/secrets/.bao-init.json
+gateways/agentgateway/LLM/.env
+gateways/agentgateway/data/
+gateways/agentgateway/bin/

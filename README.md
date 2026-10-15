@@ -15,6 +15,7 @@ This repository is the single place where MCP server references, tool descriptor
 | [`registry/`](registry/) | Local Kubernetes installs for artifact registries. Open-source agentregistry lives in [`registry/solo_agent_registry/`](registry/solo_agent_registry/). Jarvis Registry lives in [`registry/jarvis/`](registry/jarvis/). |
 | [`security/keycloak/`](security/keycloak/) | Local Keycloak in namespace `security-keycloak`, forwarded to port 18080. |
 | [`security/secrets/`](security/secrets/) | Local OpenBao in namespace `security-secrets`, forwarded to port 18200. External Secrets copies values into Kubernetes Secrets for workloads. |
+| [`gateways/agentgateway/`](gateways/agentgateway/) | Local agentgateway at http://127.0.0.1:4000/v1. One URL for Ollama and Azure AI Foundry models. |
 
 ## Using this repo
 
