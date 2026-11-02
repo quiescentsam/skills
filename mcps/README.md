@@ -130,6 +130,7 @@ Copy the inner object from `servers/<id>.json` into the project’s `mcpServers`
 | Server | Canonical config | Upstream |
 |--------|------------------|----------|
 | Chrome DevTools MCP | [`servers/chrome-devtools.json`](servers/chrome-devtools.json) | [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) |
+| Obsidian | [`servers/obsidian.json`](servers/obsidian.json) | [davidatoms/obsidian-mcp-server](https://github.com/davidatoms/obsidian-mcp-server) |
 | Render (hosted MCP) | [`servers/render.json`](servers/render.json) | [Render MCP server](https://docs.render.com/docs/mcp-server) |
 
 The global `chrome-devtools` entry is a variant of the fragment above (`--isolated`, and `SSL_CERT_FILE` unset). Add a row and a new `servers/<id>.json` when you adopt another MCP.

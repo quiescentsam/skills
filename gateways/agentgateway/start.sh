@@ -97,7 +97,7 @@ fi
 echo ""
 echo "LLM URL: http://127.0.0.1:${LOCAL_PORT}/v1"
 echo "UI:      http://127.0.0.1:${LOCAL_PORT}/ui"
-echo "Ollama model names look like ollama/llama3.2"
+echo "Ollama model names look like ollama/llama3.2 or ollama-lan/llama3.2"
 echo "Foundry model names look like foundry/<deployment>"
 echo "Stop it with:"
 echo "  bash gateways/agentgateway/stop.sh"

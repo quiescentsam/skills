@@ -1,0 +1,5 @@
+{
+  "_serverKey": "obsidian",
+  "command": "npx",
+  "args": ["-y", "obsidian-mcp-server", "${OBSIDIAN_VAULT_PATH}"]
+}

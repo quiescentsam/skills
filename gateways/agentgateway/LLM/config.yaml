@@ -2,8 +2,9 @@
 #
 # One OpenAI-compatible URL for local Ollama and Azure AI Foundry.
 # Clients call http://127.0.0.1:4000/v1 and pick a model by name:
-#   ollama/<model>    -> Ollama on the host (prefix stripped)
-#   foundry/<model>   -> Azure AI Foundry (prefix stripped)
+#   ollama/<model>      -> Ollama on the host (prefix stripped)
+#   ollama-lan/<model>  -> Ollama at 10.0.0.192 (prefix stripped)
+#   foundry/<model>     -> Azure AI Foundry (prefix stripped)
 #
 # Put the Foundry key in LLM/.env as FOUNDRY_API_KEY.
 # Replace the two Foundry placeholders below with your resource and project.
@@ -27,6 +28,12 @@ llm:
         baseUrl: http://127.0.0.1:11434/v1
       transformation:
         model: llmRequest.model.stripPrefix("ollama/")
+    - name: "ollama-lan/*"
+      provider: ollama
+      params:
+        baseUrl: http://10.0.0.192:11434/v1
+      transformation:
+        model: llmRequest.model.stripPrefix("ollama-lan/")
     - name: "foundry/*"
       provider: azure
       auth:
